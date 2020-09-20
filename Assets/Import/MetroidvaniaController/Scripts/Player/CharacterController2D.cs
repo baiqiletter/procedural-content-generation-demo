@@ -29,7 +29,8 @@ public class CharacterController2D : MonoBehaviour
 	private float prevVelocityX = 0f;
 	private bool canCheck = false; //For check if player is wallsliding
 
-	public float life = 10f; //Life of the player
+	public float life; //Life of the player
+	public float maxLife = 10f; // Max life of the player
 	public bool invincible = false; //If player can die
 	private bool canMove = true; //If player can move
 
@@ -54,6 +55,7 @@ public class CharacterController2D : MonoBehaviour
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
+		life = maxLife;
 
 		if (OnFallEvent == null)
 			OnFallEvent = new UnityEvent();
@@ -67,6 +69,7 @@ public class CharacterController2D : MonoBehaviour
 	{
 		bool wasGrounded = m_Grounded;
 		m_Grounded = false;
+		life = life > maxLife ? maxLife : life;
 
 		// The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
 		// This can be done using layers instead but Sample Assets will not overwrite your project settings.
@@ -335,6 +338,7 @@ public class CharacterController2D : MonoBehaviour
 		canMove = false;
 		invincible = true;
 		GetComponent<Attack>().enabled = false;
+		GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
 		yield return new WaitForSeconds(0.4f);
 		m_Rigidbody2D.velocity = new Vector2(0, m_Rigidbody2D.velocity.y);
 		yield return new WaitForSeconds(1.1f);

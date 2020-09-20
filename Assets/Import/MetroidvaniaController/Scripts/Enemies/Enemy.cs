@@ -32,8 +32,11 @@ public class Enemy : MonoBehaviour {
 			StartCoroutine(DestroyEnemy());
 		}
 
-		isPlat = Physics2D.OverlapCircle(fallCheck.position, .2f, 1 << LayerMask.NameToLayer("Default"));
-		isObstacle = Physics2D.OverlapCircle(wallCheck.position, .2f, turnLayerMask);
+        isPlat = Physics2D.OverlapCircle(fallCheck.position, .2f, 1 << LayerMask.NameToLayer("Default"));
+        //isPlat = Physics2D.OverlapCircle(fallCheck.position, .2f, 1 << LayerMask.NameToLayer("Scene"));
+        isObstacle = Physics2D.OverlapCircle(wallCheck.position, .2f, turnLayerMask);
+		//print("isPlat : " + isPlat);
+		//print("isObstacle : " + isObstacle);
 
 		if (!isHitted && life > 0 && Mathf.Abs(rb.velocity.y) < 0.5f)
 		{
@@ -66,6 +69,7 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public void ApplyDamage(float damage) {
+		//print("enemy.ApplyDamage");
 		if (!isInvincible) 
 		{
 			float direction = damage / Mathf.Abs(damage);
@@ -97,13 +101,15 @@ public class Enemy : MonoBehaviour {
 
 	IEnumerator DestroyEnemy()
 	{
-		CapsuleCollider2D capsule = GetComponent<CapsuleCollider2D>();
-		capsule.size = new Vector2(1f, 0.25f);
-		capsule.offset = new Vector2(0f, -0.8f);
-		capsule.direction = CapsuleDirection2D.Horizontal;
+		//CapsuleCollider2D capsule = GetComponent<CapsuleCollider2D>();
+		//capsule.size = new Vector2(1f, 0.25f);
+		////capsule.offset = new Vector2(0f, -0.8f);
+		//capsule.offset = new Vector2(0f, 0f);
+		//capsule.direction = CapsuleDirection2D.Horizontal;
 		yield return new WaitForSeconds(0.25f);
 		rb.velocity = new Vector2(0, rb.velocity.y);
-		yield return new WaitForSeconds(3f);
-		Destroy(gameObject);
+        //yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
+        Destroy(gameObject);
 	}
 }

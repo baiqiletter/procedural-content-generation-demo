@@ -33,11 +33,12 @@ public class Attack : MonoBehaviour
 			canAttack = false;
 			animator.SetBool("IsAttacking", true);
 			StartCoroutine(AttackCooldown());
+			DoDashDamage();
 		}
 
 		if (Input.GetKeyDown(KeyCode.V))
 		{
-			GameObject throwableWeapon = Instantiate(throwableObject, transform.position + new Vector3(transform.localScale.x * 0.5f,-0.2f), Quaternion.identity) as GameObject; 
+			GameObject throwableWeapon = Instantiate(throwableObject, transform.position + new Vector3(transform.localScale.x * 0.5f, 0f), Quaternion.identity) as GameObject; 
 			Vector2 direction = new Vector2(transform.localScale.x, 0);
 			throwableWeapon.GetComponent<ThrowableWeapon>().direction = direction; 
 			throwableWeapon.name = "ThrowableWeapon";
@@ -46,7 +47,7 @@ public class Attack : MonoBehaviour
 
 	IEnumerator AttackCooldown()
 	{
-		yield return new WaitForSeconds(0.25f);
+		yield return new WaitForSeconds(0.4f);
 		canAttack = true;
 	}
 
@@ -54,6 +55,7 @@ public class Attack : MonoBehaviour
 	{
 		dmgValue = Mathf.Abs(dmgValue);
 		Collider2D[] collidersEnemies = Physics2D.OverlapCircleAll(attackCheck.position, 0.9f);
+		//print("player.DoDashDamage: collider count=" + collidersEnemies.Length);
 		for (int i = 0; i < collidersEnemies.Length; i++)
 		{
 			if (collidersEnemies[i].gameObject.tag == "Enemy")
