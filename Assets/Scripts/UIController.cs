@@ -9,6 +9,10 @@ public class UIController : MonoBehaviour
 
     public Image HPImage;
     public Text HPText;
+    public Text AttackText;
+    public Text DefendText;
+    public Text ScoreText;
+    //public Text MessageText;
 
     void Awake()
     {
@@ -29,5 +33,8 @@ public class UIController : MonoBehaviour
         // set HP Bar
         HPImage.fillAmount = GameManager.Instance.health / GameManager.Instance.maxHealth;
         HPText.text = "HP " + GameManager.Instance.health + " / " + GameManager.Instance.maxHealth;
+        AttackText.text = "Attack: " + GameManager.Instance.attack;
+        DefendText.text = "Defend: " + GameManager.Instance.defend;
+        ScoreText.text = "Score: " + GameManager.Instance.score;
     }
 }

@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections;
 
 public class Enemy : MonoBehaviour {
-
 	public float life = 10;
 	public float attack = 2f;
+	public bool isBoss = false;
 	private bool isPlat;
 	private bool isObstacle;
 	private Transform fallCheck;
@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour {
 	private bool isDead = false;
 	
 	public float speed = 5f;
+	public float dropRate = 0.4f;
 
 	public bool isInvincible = false;
 	private bool isHitted = false;
@@ -26,6 +27,8 @@ public class Enemy : MonoBehaviour {
 		wallCheck = transform.Find("WallCheck");
 		rb = GetComponent<Rigidbody2D>();
 		player = GameObject.Find("Player");
+		life = Random.Range(life * 0.8f, life * 1.2f) * GameManager.Instance.enemyHealthScale;
+		attack *= GameManager.Instance.enemyAttackScale;
 	}
 	
 	// Update is called once per frame
@@ -79,11 +82,11 @@ public class Enemy : MonoBehaviour {
 		transform.localScale = theScale;
 	}
 
-	public void ApplyDamage(float damage) {
+	public void ApplyDamage(float damage, int direction) {
 		//print("enemy.ApplyDamage");
 		if (!isInvincible) 
 		{
-			float direction = damage / Mathf.Abs(damage);
+			//float direction = damage / Mathf.Abs(damage);
 			damage = Mathf.Abs(damage);
 			transform.GetComponent<Animator>().SetBool("Hit", true);
 			life -= damage;
@@ -116,6 +119,43 @@ public class Enemy : MonoBehaviour {
 		rb.velocity = new Vector2(0, rb.velocity.y);
         //yield return new WaitForSeconds(3f);
         yield return new WaitForSeconds(1f);
-        Destroy(gameObject);
+		DropItem();
+		if (isBoss)
+        {
+			dropRate = .6f;
+			DropItem();
+		}
+		GameManager.Instance.score += GameManager.Instance.killScore;
+		Destroy(gameObject);
+	}
+
+	void DropItem()
+    {
+		float dropOrNot = Random.Range(0f, 1f);
+		if (dropOrNot <= dropRate)	// drop
+        {
+			// select a drop item by all items' rare
+			int pickupIndex = 0;
+			float rareSum = 0;
+			for (int i = 0; i < UnitManager.Instance.pickup.Length; i++)
+            {
+				rareSum += UnitManager.Instance.pickup[i].GetComponent<Pickup>().rare;
+            }
+
+			float select = Random.Range(0, rareSum);
+			float tempSum = 0;
+            for (int i = 0; i < UnitManager.Instance.pickup.Length; i++)
+            {
+				tempSum += UnitManager.Instance.pickup[i].GetComponent<Pickup>().rare;
+				if (select < tempSum)
+                {
+					pickupIndex = i;
+					break;
+                }
+            }
+
+			Instantiate(UnitManager.Instance.pickup[pickupIndex], gameObject.transform.position, Quaternion.identity);
+			
+        }
 	}
 }

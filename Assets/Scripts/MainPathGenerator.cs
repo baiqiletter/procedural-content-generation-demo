@@ -1,6 +1,6 @@
-﻿using JetBrains.Annotations;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 struct Map
@@ -41,11 +41,11 @@ public class MainPathGenerator : MonoBehaviour
     private int generateTime = 0;
     private Image playerLocation;
 
-    public int Size = 4;//地图边长
+    public int Size;//地图边长
     private Map[,] maps;//原始地图
     private int blankNum;
     private bool isEntered;
-    private Image locTile;
+    private Image locationTile;
 
     List<Route> rou = new List<Route>();//存放已找到的通路
     List<Route> rouSub = new List<Route>();
@@ -61,6 +61,7 @@ public class MainPathGenerator : MonoBehaviour
     void Start()
     {
         //player = UnitManager.Instance.player;
+        Size = GameManager.Instance.mapScale;
         roomManager = GetComponent<RoomManager>();
         maps = new Map[Size, Size];
         blankNum = Size * Size;
@@ -68,7 +69,10 @@ public class MainPathGenerator : MonoBehaviour
         subPathButton.interactable = false;
         startButton.interactable = false;
         isEntered = false;
+        minlen = Size * 2;
+        maxlen = Size * 3;
 
+        print(maps.Length);
         //locTile =
         //    Instantiate(tileImage, signPanel.transform);
         //locTile.sprite = roomManager.locSign;
@@ -77,6 +81,7 @@ public class MainPathGenerator : MonoBehaviour
         {
             for (int j = 0; j < Size; j++)
             {
+                print(i + " " + j + "size: " + Size);
                 maps[i, j].select = 0;
                 maps[i, j].up = 0;
                 maps[i, j].down = 0;
@@ -100,62 +105,59 @@ public class MainPathGenerator : MonoBehaviour
     {
         if (isEntered)
         {
+            // mini-map
             generatingCanvas.SetActive(true);
-            generatingCanvas.transform.Find("MainDisplayPanel").transform.localPosition = new Vector3(300, 200, 0);
-            generatingCanvas.transform.Find("SubDisplayPanel").transform.localPosition = new Vector3(300, 200, 0);
-            generatingCanvas.transform.Find("SignPanel").transform.localPosition = new Vector3(300, 200, 0);
+            int biasX = 400;
+            int biasY = 300;
+            generatingCanvas.transform.Find("MainDisplayPanel").transform.localPosition = new Vector3(biasX, biasY, 0);
+            generatingCanvas.transform.Find("SubDisplayPanel").transform.localPosition = new Vector3(biasX, biasY, 0);
+            generatingCanvas.transform.Find("SignPanel").transform.localPosition = new Vector3(biasX, biasY, 0);
             generatingCanvas.transform.Find("MainDisplayPanel").transform.localScale = new Vector3(.5f, .5f, 0);
             generatingCanvas.transform.Find("SubDisplayPanel").transform.localScale = new Vector3(.5f, .5f, 0);
             generatingCanvas.transform.Find("SignPanel").transform.localScale = new Vector3(.5f, .5f, 0);
             generatingCanvas.transform.Find("MainDisplayPanel").GetComponent<Image>().color = new Color(255, 255, 255, 0);
             generatingCanvas.transform.Find("SubDisplayPanel").GetComponent<Image>().color = new Color(255, 255, 255, 0);
             generatingCanvas.transform.Find("SignPanel").GetComponent<Image>().color = new Color(255, 255, 255, 0);
+
             for (int i = 3; i < generatingCanvas.transform.childCount; i++)
             {
                 generatingCanvas.transform.GetChild(i).gameObject.SetActive(false);
             }
+            //for (int i = 3; i < 6; i++)
+            //{
+            //    generatingCanvas.transform.GetChild(i).gameObject.SetActive(false);
+            //}
+            //for (int i = 6; i < generatingCanvas.transform.childCount; i++)
+            //{
+            //    GameObject child = generatingCanvas.transform.GetChild(i).gameObject;
+            //    child.transform.position =
+            //        new Vector3(
+            //            child.transform.position.x,
+            //            -child.transform.position.y,
+            //            0);
+            //    child.GetComponent<Text>().color = new Color(255, 255, 255, 255);
+            //}
 
-            //if (Input.GetKeyDown(KeyCode.Tab))
-            //{
-            //    generatingCanvas.SetActive(true);
-            //}
-            //if (Input.GetKeyUp(KeyCode.Tab))
-            //{
-            //    generatingCanvas.SetActive(false);
-            //}
+            // locate player
+            if (GameManager.Instance.posX == -1 && GameManager.Instance.posY == -1)
+            {
+                locationTile.transform.position =
+                signPanel.transform.position +
+                new Vector3(
+                    (rou[0].x - (Size - 1) / 2f) * locationTile.rectTransform.rect.width * .5f,
+                    (rou[0].y - (Size - 1) / 2f) * locationTile.rectTransform.rect.height * .5f,
+                    0f);
+            } else
+            {
+                locationTile.transform.position =
+                signPanel.transform.position +
+                new Vector3(
+                    (GameManager.Instance.posX - (Size - 1) / 2f) * locationTile.rectTransform.rect.width * .5f,
+                    (GameManager.Instance.posY - (Size - 1) / 2f) * locationTile.rectTransform.rect.height * .5f,
+                    0f);
+            }
+            
 
-            //if (Input.GetKeyDown(KeyCode.LeftShift))
-            //{
-            //    generatingCanvas.transform.Find("MainDisplayPanel").transform.localPosition = new Vector3(300, 200, 0);
-            //    generatingCanvas.transform.Find("SubDisplayPanel").transform.localPosition = new Vector3(300, 200, 0);
-            //    generatingCanvas.transform.Find("SignPanel").transform.localPosition = new Vector3(300, 200, 0);
-            //    generatingCanvas.transform.Find("MainDisplayPanel").transform.localScale = new Vector3(.5f, .5f, 0);
-            //    generatingCanvas.transform.Find("SubDisplayPanel").transform.localScale = new Vector3(.5f, .5f, 0);
-            //    generatingCanvas.transform.Find("SignPanel").transform.localScale = new Vector3(.5f, .5f, 0);
-            //    generatingCanvas.transform.Find("MainDisplayPanel").GetComponent<Image>().color = new Color(255, 255, 255, 0);
-            //    generatingCanvas.transform.Find("SubDisplayPanel").GetComponent<Image>().color = new Color(255, 255, 255, 0);
-            //    generatingCanvas.transform.Find("SignPanel").GetComponent<Image>().color = new Color(255, 255, 255, 0);
-            //    for (int i = 3; i < generatingCanvas.transform.childCount; i++)
-            //    {
-            //        generatingCanvas.transform.GetChild(i).gameObject.SetActive(false);
-            //    }
-            //}
-            //if (Input.GetKeyUp(KeyCode.LeftShift))
-            //{
-            //    generatingCanvas.transform.Find("MainDisplayPanel").transform.localPosition = new Vector3(0, 0, 0);
-            //    generatingCanvas.transform.Find("SubDisplayPanel").transform.localPosition = new Vector3(0, 0, 0);
-            //    generatingCanvas.transform.Find("SignPanel").transform.localPosition = new Vector3(0, 0, 0);
-            //    generatingCanvas.transform.Find("MainDisplayPanel").transform.localScale = new Vector3(2, 2, 0);
-            //    generatingCanvas.transform.Find("SubDisplayPanel").transform.localScale = new Vector3(2, 2, 0);
-            //    generatingCanvas.transform.Find("SignPanel").transform.localScale = new Vector3(2, 2, 0);
-            //    generatingCanvas.transform.Find("MainDisplayPanel").GetComponent<Image>().color = new Color(255, 255, 255, 127);
-            //    generatingCanvas.transform.Find("SubDisplayPanel").GetComponent<Image>().color = new Color(255, 255, 255, 127);
-            //    generatingCanvas.transform.Find("SignPanel").GetComponent<Image>().color = new Color(255, 255, 255, 127);
-            //    for (int i = 3; i < generatingCanvas.transform.childCount; i++)
-            //    {
-            //        generatingCanvas.transform.GetChild(i).gameObject.SetActive(true);
-            //    }
-            //}
         }
 
         transform.Find("GeneratingCanvas").Find("LevelText").GetComponent<Text>().text = 
@@ -168,6 +170,8 @@ public class MainPathGenerator : MonoBehaviour
             "[ Enemy Attack ]		x" + GameManager.Instance.enemyAttackScale;
         transform.Find("GeneratingCanvas").Find("MapScaleText").GetComponent<Text>().text =
             "[ Map Scale ]			" + GameManager.Instance.mapScale;
+
+        
     }
 
     public void onClickGenerateMainPathButton()
@@ -289,15 +293,15 @@ public class MainPathGenerator : MonoBehaviour
 
         blankNum--;
 
-        int entranceX = Random.Range(0, 4);  //随机起点
-        int entranceY = Random.Range(0, 4);
+        int entranceX = Random.Range(0, Size);  //随机起点
+        int entranceY = Random.Range(0, Size);
 
         if (blankNum > Size)
         {
             while (maps[entranceX, entranceY].select == 1)
             {
-                entranceX = Random.Range(0, 4);
-                entranceY = Random.Range(0, 4);
+                entranceX = Random.Range(0, Size);
+                entranceY = Random.Range(0, Size);
             }
         } else
         {
@@ -556,32 +560,25 @@ public class MainPathGenerator : MonoBehaviour
             maps[rou[i].x, rou[i].y].placed = true;
             maps[rou[i].x, rou[i].y].Tile.GetComponent<Room>().x = rou[i].x;
             maps[rou[i].x, rou[i].y].Tile.GetComponent<Room>().y = rou[i].y;
+            maps[rou[i].x, rou[i].y].Tile.transform.Find("Grid").Find("Tilemap Ground").GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
             if (i == rou.Count - 1)
             {
                 if (maps[rou[i].x, rou[i].y].up == 1)
                 {
                     maps[rou[i].x, rou[i].y].Tile.transform.Find("Grid").Find("Tilemap WallUp").gameObject.SetActive(false);
-                    //Instantiate(roomManager.roomsEndWallUp[endRoomIndex], room.transform.Find("Grid").transform);
-                    //print("up");
                 }
                 if (maps[rou[i].x, rou[i].y].down == 1)
                 {
                     maps[rou[i].x, rou[i].y].Tile.transform.Find("Grid").Find("Tilemap WallDown").gameObject.SetActive(false);
-                    //Instantiate(roomManager.roomsEndWallDown[endRoomIndex], room.transform.Find("Grid").transform);
-                    //print("down");
                 }
                 if (maps[rou[i].x, rou[i].y].left == 1)
                 {
                     maps[rou[i].x, rou[i].y].Tile.transform.Find("Grid").Find("Tilemap WallLeft").gameObject.SetActive(false);
-                    //Instantiate(roomManager.roomsEndWallLeft[endRoomIndex], room.transform.Find("Grid").transform);
-                    //print("left");
                 }
                 if (maps[rou[i].x, rou[i].y].right == 1)
                 {
                     maps[rou[i].x, rou[i].y].Tile.transform.Find("Grid").Find("Tilemap WallRight").gameObject.SetActive(false);
-                    //Instantiate(roomManager.roomsEndWallRight[endRoomIndex], room.transform.Find("Grid").transform);
-                    //print("right");
                 }
             }
         }
@@ -602,7 +599,7 @@ public class MainPathGenerator : MonoBehaviour
 
         for (int i = 0; i < rouSub.Count; i++)
         {
-            print("(" + rouSub[i].x + "," + rouSub[i].y + ")" + "  " + "type=" + maps[rouSub[i].x, rouSub[i].y].type + ":" + maps[rouSub[i].x, rouSub[i].y].up + maps[rouSub[i].x, rouSub[i].y].down + maps[rouSub[i].x, rouSub[i].y].left + maps[rouSub[i].x, rouSub[i].y].right);
+            //print("(" + rouSub[i].x + "," + rouSub[i].y + ")" + "  " + "type=" + maps[rouSub[i].x, rouSub[i].y].type + ":" + maps[rouSub[i].x, rouSub[i].y].up + maps[rouSub[i].x, rouSub[i].y].down + maps[rouSub[i].x, rouSub[i].y].left + maps[rouSub[i].x, rouSub[i].y].right);
 
             int roomType = maps[rouSub[i].x, rouSub[i].y].type;
             GameObject room = roomManager.rooms1111[Random.Range(0, roomManager.rooms1111.Length)];
@@ -624,12 +621,38 @@ public class MainPathGenerator : MonoBehaviour
                 case 14: room = roomManager.rooms1110[Random.Range(0, roomManager.rooms1110.Length)]; break;
                 case 15: room = roomManager.rooms1111[Random.Range(0, roomManager.rooms1111.Length)]; break;
             }
-            if (maps[rouSub[i].x, rouSub[i].y].placed == false) // 该位置原为空
+
+            if (i == 0) // 特殊房间
+            {
+                room = roomManager.roomsSpecial[Random.Range(0, roomManager.roomsSpecial.Length)];
+            }
+
+            if (maps[rouSub[i].x, rouSub[i].y].placed == false) // 该位置原为空（包含特殊房间和普通房间）
             {
                 maps[rouSub[i].x, rouSub[i].y].Tile = 
                     Instantiate(room, new Vector3(rouSub[i].x * 18 * .99f, rouSub[i].y * 12 * .99f, 0f), Quaternion.identity);
                 maps[rouSub[i].x, rouSub[i].y].placed = true; 
-            } else if (rouSub[i].x == rou[rou.Count-1].x && rouSub[i].y == rou[rou.Count-1].y) // 该位置已有房间，但该房间是终点房间，不重新加载
+                if (i == 0) // 处理特殊房间的四个出口
+                {
+                    if (maps[rouSub[i].x, rouSub[i].y].up == 1)
+                    {
+                        maps[rouSub[i].x, rouSub[i].y].Tile.transform.Find("Grid").Find("Tilemap WallUp").gameObject.SetActive(false);
+                    }
+                    if (maps[rouSub[i].x, rouSub[i].y].down == 1)
+                    {
+                        maps[rouSub[i].x, rouSub[i].y].Tile.transform.Find("Grid").Find("Tilemap WallDown").gameObject.SetActive(false);
+                    }
+                    if (maps[rouSub[i].x, rouSub[i].y].left == 1)
+                    {
+                        maps[rouSub[i].x, rouSub[i].y].Tile.transform.Find("Grid").Find("Tilemap WallLeft").gameObject.SetActive(false);
+                    }
+                    if (maps[rouSub[i].x, rouSub[i].y].right == 1)
+                    {
+                        maps[rouSub[i].x, rouSub[i].y].Tile.transform.Find("Grid").Find("Tilemap WallRight").gameObject.SetActive(false);
+                    }
+                }
+            } 
+            else if (rouSub[i].x == rou[rou.Count-1].x && rouSub[i].y == rou[rou.Count-1].y) // 该位置已有房间，但该房间是终点房间，不重新加载
             {
                 if (maps[rouSub[i].x, rouSub[i].y].up == 1)
                 {
@@ -647,10 +670,12 @@ public class MainPathGenerator : MonoBehaviour
                 {
                     maps[rouSub[i].x, rouSub[i].y].Tile.transform.Find("Grid").Find("Tilemap WallRight").gameObject.SetActive(false);
                 }
-            } else // 该位置已有房间，但现在类型做了更改，需要重新加载
+            } 
+            else // 该位置已有房间，但现在类型做了更改，需要重新加载
             {
                 //maps[rouSub[i].x, rouSub[i].y].Tile.SetActive(false);
-                Destroy(maps[rouSub[i].x, rouSub[i].y].Tile);
+                //Destroy(maps[rouSub[i].x, rouSub[i].y].Tile);
+                maps[rouSub[i].x, rouSub[i].y].Tile.GetComponent<EnemyGenerator>().DestroyRoom();
                 maps[rouSub[i].x, rouSub[i].y].Tile =
                     Instantiate(room, new Vector3(rouSub[i].x * 18 * .99f, rouSub[i].y * 12 * .99f, 0f), Quaternion.identity);
             }
@@ -717,6 +742,18 @@ public class MainPathGenerator : MonoBehaviour
                 0f);
         tile.sprite = roomManager.roomTempletes[roomType + 16];
 
+        if (generateTime == 0)
+        {
+            Image specialTile =
+                Instantiate(tileImage, signPanel.transform);
+            specialTile.transform.position +=
+            new Vector3(
+                (rouSub[generateTime].x - (Size - 1) / 2f) * tile.rectTransform.rect.width,
+                (rouSub[generateTime].y - (Size - 1) / 2f) * tile.rectTransform.rect.height,
+                0f);
+            specialTile.sprite = roomManager.specialSign;
+        }
+
         generateTime++;
     }
 
@@ -752,5 +789,10 @@ public class MainPathGenerator : MonoBehaviour
         UIController.Instance.transform.Find("Canvas").gameObject.SetActive(true);
 
         isEntered = true;
+
+        locationTile = Instantiate(tileImage, signPanel.transform);
+        locationTile.sprite = roomManager.locSign;
+
+        
     }
 }

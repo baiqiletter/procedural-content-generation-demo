@@ -30,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9144588764976479131}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.95, y: 3.96, z: 0}
+  m_LocalPosition: {x: 1.485, y: 0, z: 0}
   m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_Children:
   - {fileID: 9144588765161958017}
@@ -64,10 +64,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 15
   attack: 2
+  isBoss: 0
   turnLayerMask:
     serializedVersion: 2
     m_Bits: 10241
   speed: 3
+  dropRate: 0.4
   isInvincible: 0
 --- !u!212 &9144588764976479077
 SpriteRenderer:
@@ -157,7 +159,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &9144588764976479079
 CapsuleCollider2D:

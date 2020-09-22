@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de349ab685db3174cb53382179cb53d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 8842883382875660106, guid: 31b222a449182ec4b899b59a5231cbf9, type: 3}
+  player: {fileID: 0}
   enemy:
   - {fileID: 7363798750879008859, guid: 08b336bbc528dc549b2007e55d19be8e, type: 3}
   - {fileID: 4125169232621389938, guid: 9dc2e4879775b074ab8fb2d26f13c64f, type: 3}
@@ -53,3 +53,11 @@ MonoBehaviour:
   boss:
   - {fileID: 1381111291898437910, guid: 819ecf3cb2346b74d8a0a77ec57df356, type: 3}
   npc: []
+  pickup:
+  - {fileID: 205554704346990042, guid: e5ac8050a4a340e46a190bbecc07b077, type: 3}
+  - {fileID: 6457600285515646406, guid: 54777786c46df724e90273a477e685c4, type: 3}
+  - {fileID: 6955025367619067305, guid: f2ed7cd7612922d448d770fca1af1f67, type: 3}
+  - {fileID: 5075907072642592789, guid: effac8070f91b0d4ca9eaff2592aa232, type: 3}
+  - {fileID: 8609077559272574865, guid: 9c111e939005ee248b81283f875de5d6, type: 3}
+  - {fileID: 3952895997603296368, guid: 27a4c5a3236563549b4db6568c4ac575, type: 3}
+  drop: {fileID: 8048903608332281018, guid: 444a7c16615086a4f849220cc8eac11e, type: 3}

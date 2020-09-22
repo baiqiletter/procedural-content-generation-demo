@@ -26,10 +26,12 @@ public class RoomManager : MonoBehaviour
     public GameObject[] rooms1110;
     public GameObject[] rooms1111;
     public GameObject[] roomsEnd;
+    public GameObject[] roomsSpecial;
 
     // room templates
     public Sprite[] roomTempletes;
     public Sprite startSign;
     public Sprite endSign;
     public Sprite locSign;
+    public Sprite specialSign;
 }

@@ -17,6 +17,10 @@ public class LevelLoader : MonoBehaviour
         // change global value
 
         GameManager.Instance.level++;
+        if (GameManager.Instance.level % 5 == 0)
+        {
+            GameManager.Instance.mapScale++;
+        }
     }
 
     IEnumerator loadAsynchronously(int sceneIndex)

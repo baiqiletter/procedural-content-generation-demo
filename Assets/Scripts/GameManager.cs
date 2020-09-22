@@ -16,8 +16,14 @@ public class GameManager : MonoBehaviour
     // optimize
     public float roomDetectDistance;
     // statistic
+    public int score;
+    public int killScore;
+    public int itemScore;
+    public int passScore;
     public int killNum;
     public int killNumTotal;
+    public int itemNum;
+    public int itemNumTotal;
     public int passRoomNum;
     public int passRoomNumTotal;
     public bool[,] reached;
@@ -41,6 +47,7 @@ public class GameManager : MonoBehaviour
 
         InitVar();
         InitReached();
+
     }
 
     // Update is called once per frame
@@ -52,6 +59,7 @@ public class GameManager : MonoBehaviour
         {
             reached[posX, posY] = true;
             passRoomNum++;
+            score += passScore;
             print("(" + posX + ", " + posY + ")");
         }
     }
@@ -69,7 +77,12 @@ public class GameManager : MonoBehaviour
         //optimize
         roomDetectDistance = 10f;
         //statistic
+        score = 0;
+        killScore = 10;
+        itemScore = 10;
+        passScore = 5;
         killNumTotal = 0;
+        itemNumTotal = 0;
         passRoomNumTotal = 0;
         //dynamic difficulty
         minEnemyCount = 1;

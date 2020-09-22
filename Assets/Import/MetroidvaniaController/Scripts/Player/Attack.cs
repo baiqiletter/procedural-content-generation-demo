@@ -36,13 +36,13 @@ public class Attack : MonoBehaviour
 			DoDashDamage();
 		}
 
-		if (Input.GetKeyDown(KeyCode.V))
-		{
-			GameObject throwableWeapon = Instantiate(throwableObject, transform.position + new Vector3(transform.localScale.x * 0.5f, 0f), Quaternion.identity) as GameObject; 
-			Vector2 direction = new Vector2(transform.localScale.x, 0);
-			throwableWeapon.GetComponent<ThrowableWeapon>().direction = direction; 
-			throwableWeapon.name = "ThrowableWeapon";
-		}
+		//if (Input.GetKeyDown(KeyCode.V))
+		//{
+		//	GameObject throwableWeapon = Instantiate(throwableObject, transform.position + new Vector3(transform.localScale.x * 0.5f, 0f), Quaternion.identity) as GameObject; 
+		//	Vector2 direction = new Vector2(transform.localScale.x, 0);
+		//	throwableWeapon.GetComponent<ThrowableWeapon>().direction = direction; 
+		//	throwableWeapon.name = "ThrowableWeapon";
+		//}
 	}
 
 	IEnumerator AttackCooldown()
@@ -53,19 +53,26 @@ public class Attack : MonoBehaviour
 
 	public void DoDashDamage()
 	{
-		GameManager.Instance.attack = Mathf.Abs(GameManager.Instance.attack);
-		Collider2D[] collidersEnemies = Physics2D.OverlapCircleAll(attackCheck.position, 0.9f);
+		//GameManager.Instance.attack = Mathf.Abs(GameManager.Instance.attack);
+		Collider2D[] collidersEnemies = Physics2D.OverlapCircleAll(attackCheck.position, 1f);
 		//print("player.DoDashDamage: collider count=" + collidersEnemies.Length);
 		for (int i = 0; i < collidersEnemies.Length; i++)
 		{
 			if (collidersEnemies[i].gameObject.tag == "Enemy")
 			{
+				int direction = 1;
 				if (collidersEnemies[i].transform.position.x - transform.position.x < 0)
 				{
-					GameManager.Instance.attack = -GameManager.Instance.attack;
+					//GameManager.Instance.attack = -GameManager.Instance.attack;
+					direction = -1;
 				}
-				collidersEnemies[i].gameObject.SendMessage("ApplyDamage", GameManager.Instance.attack);
+				//collidersEnemies[i].gameObject.SendMessage("ApplyDamage", GameManager.Instance.attack);
+				collidersEnemies[i].gameObject.GetComponent<Enemy>().ApplyDamage(GameManager.Instance.attack, direction);
 				cam.GetComponent<CameraFollow>().ShakeCamera();
+
+				// show enemy info
+				string s = collidersEnemies[i].GetComponent<Enemy>().life + " ( -" + GameManager.Instance.attack + " )";
+				GameObject.Find("UI Controller").GetComponent<DisplayMessage>().SendToMessage(s);
 			}
 		}
 	}

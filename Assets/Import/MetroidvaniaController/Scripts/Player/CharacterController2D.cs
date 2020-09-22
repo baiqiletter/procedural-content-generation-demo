@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CharacterController2D : MonoBehaviour
 {
@@ -270,7 +271,8 @@ public class CharacterController2D : MonoBehaviour
 		{
 			animator.SetBool("Hit", true);
 			//life -= damage;
-			GameManager.Instance.health -= damage;
+			GameManager.Instance.health -= Mathf.Max(0, damage - GameManager.Instance.defend);
+			GameObject.Find("UI Controller").GetComponent<DisplayMessage>().SendToMessage("hp - " + Mathf.Max(0, damage - GameManager.Instance.defend));
 			Vector2 damageDir = Vector3.Normalize(transform.position - position) * 40f ;
 			m_Rigidbody2D.velocity = Vector2.zero;
 			m_Rigidbody2D.AddForce(damageDir * 10);
@@ -345,6 +347,7 @@ public class CharacterController2D : MonoBehaviour
 		yield return new WaitForSeconds(1.1f);
 		//SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
 		LevelFinish.Instance.transform.Find("GameOver Canvas").gameObject.SetActive(true);
+		LevelFinish.Instance.transform.Find("GameOver Canvas").Find("Panel").Find("Score Text").GetComponent<Text>().text = "Score:	" + GameManager.Instance.score;
 	}
 
 	public void FreezePlayer()

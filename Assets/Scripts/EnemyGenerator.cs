@@ -10,6 +10,7 @@ public class EnemyGenerator : MonoBehaviour
     public int maxEnemyCount = 3;
     public bool isSpecialRoom;
     public bool isBossRoom;
+    public List<GameObject> enemies;
 
     private GameObject enemySpawn;
     public Tilemap roomTilemap;
@@ -25,7 +26,8 @@ public class EnemyGenerator : MonoBehaviour
     {
         if (isSpecialRoom)
         {
-            enemyCount = 0;
+            enemyCount = 3;
+            GenerateDrop();
         }
         else if (isBossRoom)
         {
@@ -38,6 +40,7 @@ public class EnemyGenerator : MonoBehaviour
             GenerateEnemy();
         }
 
+        enemies = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -60,6 +63,7 @@ public class EnemyGenerator : MonoBehaviour
                 blankTilePos.y * .99f * .5f,
                 0);
         //print("ActualPos : " + enemySpawn.transform.position);
+        enemies.Add(enemySpawn);
     }
 
     void GenerateEnemy()
@@ -79,9 +83,33 @@ public class EnemyGenerator : MonoBehaviour
                     blankTilePos.x * .99f * .5f,
                     blankTilePos.y * .99f * .5f,
                     0);
-            //print("ActualPos : " + enemySpawn.transform.position);
-
+            print(enemySpawn.name + " : " + enemySpawn.transform.position);
+            
             generatedEnemyCount++;
+            enemies.Add(enemySpawn);
+        }
+    }
+
+    void GenerateDrop()
+    {
+        int generatedEnemyCount = 0;
+        while (generatedEnemyCount < enemyCount)
+        {
+            // generate an enemy
+            Vector3Int blankTilePos = GetBlankTile();
+
+            enemySpawn = UnitManager.Instance.drop;
+
+            Instantiate(enemySpawn, gameObject.transform);
+            enemySpawn.transform.localPosition =
+                new Vector3(
+                    blankTilePos.x * .99f * .5f,
+                    blankTilePos.y * .99f * .5f,
+                    0);
+            print(enemySpawn.name + " : " + enemySpawn.transform.position);
+            
+            generatedEnemyCount++;
+            enemies.Add(enemySpawn);
         }
     }
 
@@ -113,6 +141,14 @@ public class EnemyGenerator : MonoBehaviour
             }
         }
         return true;
+    }
+    
+    public void DestroyRoom()
+    {
+        foreach (GameObject enemy in enemies){
+            Destroy(enemy);
+        }
+        Destroy(gameObject);
     }
 
     void testTilemapAPI()

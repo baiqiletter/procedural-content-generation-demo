@@ -9,6 +9,8 @@ public class UnitManager : MonoBehaviour
     public GameObject[] enemy;
     public GameObject[] boss;
     public GameObject[] npc;
+    public GameObject[] pickup;
+    public GameObject drop;
 
     void Awake()
     {

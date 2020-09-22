@@ -18,9 +18,9 @@ public class Floating : MonoBehaviour
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
-        radian += perRadian; // 弧度每次加0.03 
+        radian += perRadian; // 弧度每次加0.03   
         radian %= 360;
         float dx = Mathf.Sin(radian) * radius;
         float dy = Mathf.Cos(radian) * radius; // dy定义的是针对y轴的变量，也可以使用sin，找到一个适合的值就可以

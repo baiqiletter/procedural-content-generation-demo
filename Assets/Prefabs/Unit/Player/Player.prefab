@@ -47,7 +47,6 @@ GameObject:
   - component: {fileID: 8793451653709497146}
   - component: {fileID: 8811009015542830606}
   - component: {fileID: 8906166983922615874}
-  - component: {fileID: 3681001763095749687}
   m_Layer: 1
   m_Name: Player
   m_TagString: Player
@@ -139,7 +138,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9955788a5eaffa49a9297f38eaa6202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dmgValue: 4
   throwableObject: {fileID: 5532974359214069763, guid: 340067e8e5a097546ad175f1d00a6ece,
     type: 3}
   attackCheck: {fileID: 8841507282983017990}
@@ -250,8 +248,8 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
+  m_CollisionDetection: 1
+  m_Constraints: 7
 --- !u!70 &8811009015542830606
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -364,18 +362,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &3681001763095749687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8842883382875660106}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef9db6d8e9fdc0b4f86627a235e4d9c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8843050250479019068
 GameObject:
   m_ObjectHideFlags: 0
@@ -5242,7 +5228,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8843184810813587796}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.468, y: 0.343, z: 0}
+  m_LocalPosition: {x: 0.331, y: 0.568, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8839529583565968576}
