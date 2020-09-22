@@ -1508,6 +1508,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8018589359515773759}
   - component: {fileID: 3383686717765408858}
+  - component: {fileID: 3673787572252418676}
+  - component: {fileID: -2794836302592166913}
   m_Layer: 0
   m_Name: r1110-1
   m_TagString: Untagged
@@ -1548,6 +1550,38 @@ MonoBehaviour:
   entry_rt: 1
   x: 0
   y: 0
+  isSpecial: 0
+  isEnd: 0
+--- !u!114 &3673787572252418676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8018589359515773758}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbac122234cf6f84590544062aa95298, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyCount: 0
+  minEnemyCount: 1
+  maxEnemyCount: 3
+  isSpecialRoom: 0
+  isBossRoom: 0
+  roomTilemap: {fileID: 8018589360072096381}
+--- !u!114 &-2794836302592166913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8018589359515773758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f071c3fb3a691344a5bfe42c5348f23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8018589360072096354
 GameObject:
   m_ObjectHideFlags: 0
@@ -1561,6 +1595,7 @@ GameObject:
   - component: {fileID: 8018589360072096380}
   - component: {fileID: 8018589360072096382}
   - component: {fileID: 6228243123976054983}
+  - component: {fileID: 5323031834686718939}
   m_Layer: 0
   m_Name: Tilemap Ground
   m_TagString: Untagged
@@ -4153,6 +4188,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 7
+--- !u!114 &5323031834686718939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8018589360072096354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ace5d3376b3ccf44b3bdcc8acc08566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  room: {fileID: 8018589359515773758}
 --- !u!1 &8018589360079390816
 GameObject:
   m_ObjectHideFlags: 0
@@ -4212,6 +4260,7 @@ GameObject:
   - component: {fileID: 599400780112566555}
   - component: {fileID: 3498067802573383577}
   - component: {fileID: 518581399018890676}
+  - component: {fileID: 2791557566458493941}
   m_Layer: 13
   m_Name: Tilemap AirWall
   m_TagString: Untagged
@@ -4863,3 +4912,16 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
+--- !u!114 &2791557566458493941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8437715326320485673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ace5d3376b3ccf44b3bdcc8acc08566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  room: {fileID: 8018589359515773758}

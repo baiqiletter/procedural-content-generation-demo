@@ -60,6 +60,7 @@ public class MainPathGenerator : MonoBehaviour
 
     void Start()
     {
+        //player = UnitManager.Instance.player;
         roomManager = GetComponent<RoomManager>();
         maps = new Map[Size, Size];
         blankNum = Size * Size;
@@ -99,20 +100,74 @@ public class MainPathGenerator : MonoBehaviour
     {
         if (isEntered)
         {
-            if (Input.GetKeyDown(KeyCode.Tab))
+            generatingCanvas.SetActive(true);
+            generatingCanvas.transform.Find("MainDisplayPanel").transform.localPosition = new Vector3(300, 200, 0);
+            generatingCanvas.transform.Find("SubDisplayPanel").transform.localPosition = new Vector3(300, 200, 0);
+            generatingCanvas.transform.Find("SignPanel").transform.localPosition = new Vector3(300, 200, 0);
+            generatingCanvas.transform.Find("MainDisplayPanel").transform.localScale = new Vector3(.5f, .5f, 0);
+            generatingCanvas.transform.Find("SubDisplayPanel").transform.localScale = new Vector3(.5f, .5f, 0);
+            generatingCanvas.transform.Find("SignPanel").transform.localScale = new Vector3(.5f, .5f, 0);
+            generatingCanvas.transform.Find("MainDisplayPanel").GetComponent<Image>().color = new Color(255, 255, 255, 0);
+            generatingCanvas.transform.Find("SubDisplayPanel").GetComponent<Image>().color = new Color(255, 255, 255, 0);
+            generatingCanvas.transform.Find("SignPanel").GetComponent<Image>().color = new Color(255, 255, 255, 0);
+            for (int i = 3; i < generatingCanvas.transform.childCount; i++)
             {
-                if (generatingCanvas.activeSelf)
-                    generatingCanvas.SetActive(false);
-                else
-                    generatingCanvas.SetActive(true);
+                generatingCanvas.transform.GetChild(i).gameObject.SetActive(false);
             }
 
-            //locTile.transform.position =
-            //    new Vector3(
-            //        player.transform.position.x * 18 * 0.99f,
-            //        player.transform.position.y * 12 * 0.99f,
-            //        -.0001f);
+            //if (Input.GetKeyDown(KeyCode.Tab))
+            //{
+            //    generatingCanvas.SetActive(true);
+            //}
+            //if (Input.GetKeyUp(KeyCode.Tab))
+            //{
+            //    generatingCanvas.SetActive(false);
+            //}
+
+            //if (Input.GetKeyDown(KeyCode.LeftShift))
+            //{
+            //    generatingCanvas.transform.Find("MainDisplayPanel").transform.localPosition = new Vector3(300, 200, 0);
+            //    generatingCanvas.transform.Find("SubDisplayPanel").transform.localPosition = new Vector3(300, 200, 0);
+            //    generatingCanvas.transform.Find("SignPanel").transform.localPosition = new Vector3(300, 200, 0);
+            //    generatingCanvas.transform.Find("MainDisplayPanel").transform.localScale = new Vector3(.5f, .5f, 0);
+            //    generatingCanvas.transform.Find("SubDisplayPanel").transform.localScale = new Vector3(.5f, .5f, 0);
+            //    generatingCanvas.transform.Find("SignPanel").transform.localScale = new Vector3(.5f, .5f, 0);
+            //    generatingCanvas.transform.Find("MainDisplayPanel").GetComponent<Image>().color = new Color(255, 255, 255, 0);
+            //    generatingCanvas.transform.Find("SubDisplayPanel").GetComponent<Image>().color = new Color(255, 255, 255, 0);
+            //    generatingCanvas.transform.Find("SignPanel").GetComponent<Image>().color = new Color(255, 255, 255, 0);
+            //    for (int i = 3; i < generatingCanvas.transform.childCount; i++)
+            //    {
+            //        generatingCanvas.transform.GetChild(i).gameObject.SetActive(false);
+            //    }
+            //}
+            //if (Input.GetKeyUp(KeyCode.LeftShift))
+            //{
+            //    generatingCanvas.transform.Find("MainDisplayPanel").transform.localPosition = new Vector3(0, 0, 0);
+            //    generatingCanvas.transform.Find("SubDisplayPanel").transform.localPosition = new Vector3(0, 0, 0);
+            //    generatingCanvas.transform.Find("SignPanel").transform.localPosition = new Vector3(0, 0, 0);
+            //    generatingCanvas.transform.Find("MainDisplayPanel").transform.localScale = new Vector3(2, 2, 0);
+            //    generatingCanvas.transform.Find("SubDisplayPanel").transform.localScale = new Vector3(2, 2, 0);
+            //    generatingCanvas.transform.Find("SignPanel").transform.localScale = new Vector3(2, 2, 0);
+            //    generatingCanvas.transform.Find("MainDisplayPanel").GetComponent<Image>().color = new Color(255, 255, 255, 127);
+            //    generatingCanvas.transform.Find("SubDisplayPanel").GetComponent<Image>().color = new Color(255, 255, 255, 127);
+            //    generatingCanvas.transform.Find("SignPanel").GetComponent<Image>().color = new Color(255, 255, 255, 127);
+            //    for (int i = 3; i < generatingCanvas.transform.childCount; i++)
+            //    {
+            //        generatingCanvas.transform.GetChild(i).gameObject.SetActive(true);
+            //    }
+            //}
         }
+
+        transform.Find("GeneratingCanvas").Find("LevelText").GetComponent<Text>().text = 
+            "[ Level ]				" + GameManager.Instance.level;
+        transform.Find("GeneratingCanvas").Find("EnemyCountText").GetComponent<Text>().text =
+            "[ Enemy Count ]		" + GameManager.Instance.minEnemyCount + " - " + GameManager.Instance.maxEnemyCount;
+        transform.Find("GeneratingCanvas").Find("EnemyHealthText").GetComponent<Text>().text =
+            "[ Enemy Health ]		x" + GameManager.Instance.enemyHealthScale;
+        transform.Find("GeneratingCanvas").Find("EnemyAttackText").GetComponent<Text>().text =
+            "[ Enemy Attack ]		x" + GameManager.Instance.enemyAttackScale;
+        transform.Find("GeneratingCanvas").Find("MapScaleText").GetComponent<Text>().text =
+            "[ Map Scale ]			" + GameManager.Instance.mapScale;
     }
 
     public void onClickGenerateMainPathButton()
@@ -146,8 +201,8 @@ public class MainPathGenerator : MonoBehaviour
         player.transform.position = new Vector3(entranceX * 18 * 0.99f, entranceY * 12 * 0.99f,-.0001f);
 
         rou.Add(nextNode);
-        print("entrance: (" + entranceX + "," + entranceY + ")");
-        print("roulen=" + roulen);
+        //print("entrance: (" + entranceX + "," + entranceY + ")");
+        //print("roulen=" + roulen);
         int k = 0;
         while (true)
         {
@@ -467,7 +522,7 @@ public class MainPathGenerator : MonoBehaviour
 
         for (int i = 0; i < rou.Count; i++)
         {
-            print("(" + rou[i].x + "," + rou[i].y + ")" + "  " + "type=" + maps[rou[i].x, rou[i].y].type + ":" + maps[rou[i].x, rou[i].y].up + maps[rou[i].x, rou[i].y].down + maps[rou[i].x, rou[i].y].left + maps[rou[i].x, rou[i].y].right);
+            //print("(" + rou[i].x + "," + rou[i].y + ")" + "  " + "type=" + maps[rou[i].x, rou[i].y].type + ":" + maps[rou[i].x, rou[i].y].up + maps[rou[i].x, rou[i].y].down + maps[rou[i].x, rou[i].y].left + maps[rou[i].x, rou[i].y].right);
 
             int roomType = maps[rou[i].x, rou[i].y].type;
             GameObject room = roomManager.rooms1111[Random.Range(0, roomManager.rooms1111.Length)];
@@ -489,12 +544,49 @@ public class MainPathGenerator : MonoBehaviour
                 case 14: room = roomManager.rooms1110[Random.Range(0, roomManager.rooms1110.Length)]; break;
                 case 15: room = roomManager.rooms1111[Random.Range(0, roomManager.rooms1111.Length)]; break;
             }
+
+            int endRoomIndex = Random.Range(0, roomManager.roomsEnd.Length);
+            if (i == rou.Count - 1) // 最终房间
+            {
+                room = roomManager.roomsEnd[endRoomIndex];
+            }
+
             maps[rou[i].x, rou[i].y].Tile = 
                 Instantiate(room, new Vector3(rou[i].x * 18 * .99f, rou[i].y * 12 * .99f, 0f), Quaternion.identity);
             maps[rou[i].x, rou[i].y].placed = true;
+            maps[rou[i].x, rou[i].y].Tile.GetComponent<Room>().x = rou[i].x;
+            maps[rou[i].x, rou[i].y].Tile.GetComponent<Room>().y = rou[i].y;
+
+            if (i == rou.Count - 1)
+            {
+                if (maps[rou[i].x, rou[i].y].up == 1)
+                {
+                    maps[rou[i].x, rou[i].y].Tile.transform.Find("Grid").Find("Tilemap WallUp").gameObject.SetActive(false);
+                    //Instantiate(roomManager.roomsEndWallUp[endRoomIndex], room.transform.Find("Grid").transform);
+                    //print("up");
+                }
+                if (maps[rou[i].x, rou[i].y].down == 1)
+                {
+                    maps[rou[i].x, rou[i].y].Tile.transform.Find("Grid").Find("Tilemap WallDown").gameObject.SetActive(false);
+                    //Instantiate(roomManager.roomsEndWallDown[endRoomIndex], room.transform.Find("Grid").transform);
+                    //print("down");
+                }
+                if (maps[rou[i].x, rou[i].y].left == 1)
+                {
+                    maps[rou[i].x, rou[i].y].Tile.transform.Find("Grid").Find("Tilemap WallLeft").gameObject.SetActive(false);
+                    //Instantiate(roomManager.roomsEndWallLeft[endRoomIndex], room.transform.Find("Grid").transform);
+                    //print("left");
+                }
+                if (maps[rou[i].x, rou[i].y].right == 1)
+                {
+                    maps[rou[i].x, rou[i].y].Tile.transform.Find("Grid").Find("Tilemap WallRight").gameObject.SetActive(false);
+                    //Instantiate(roomManager.roomsEndWallRight[endRoomIndex], room.transform.Find("Grid").transform);
+                    //print("right");
+                }
+            }
         }
 
-        Debug.Log("blankNum = " + blankNum);
+        //Debug.Log("blankNum = " + blankNum);
     }
 
     void displaySubPath()
@@ -536,14 +628,35 @@ public class MainPathGenerator : MonoBehaviour
             {
                 maps[rouSub[i].x, rouSub[i].y].Tile = 
                     Instantiate(room, new Vector3(rouSub[i].x * 18 * .99f, rouSub[i].y * 12 * .99f, 0f), Quaternion.identity);
-                maps[rouSub[i].x, rouSub[i].y].placed = true; // 该位置已有房间，但现在类型做了更改，需要重新加载
-            } else
+                maps[rouSub[i].x, rouSub[i].y].placed = true; 
+            } else if (rouSub[i].x == rou[rou.Count-1].x && rouSub[i].y == rou[rou.Count-1].y) // 该位置已有房间，但该房间是终点房间，不重新加载
             {
-                maps[rouSub[i].x, rouSub[i].y].Tile.SetActive(false);
+                if (maps[rouSub[i].x, rouSub[i].y].up == 1)
+                {
+                    maps[rouSub[i].x, rouSub[i].y].Tile.transform.Find("Grid").Find("Tilemap WallUp").gameObject.SetActive(false);
+                }
+                if (maps[rouSub[i].x, rouSub[i].y].down == 1)
+                {
+                    maps[rouSub[i].x, rouSub[i].y].Tile.transform.Find("Grid").Find("Tilemap WallDown").gameObject.SetActive(false);
+                }
+                if (maps[rouSub[i].x, rouSub[i].y].left == 1)
+                {
+                    maps[rouSub[i].x, rouSub[i].y].Tile.transform.Find("Grid").Find("Tilemap WallLeft").gameObject.SetActive(false);
+                }
+                if (maps[rouSub[i].x, rouSub[i].y].right == 1)
+                {
+                    maps[rouSub[i].x, rouSub[i].y].Tile.transform.Find("Grid").Find("Tilemap WallRight").gameObject.SetActive(false);
+                }
+            } else // 该位置已有房间，但现在类型做了更改，需要重新加载
+            {
+                //maps[rouSub[i].x, rouSub[i].y].Tile.SetActive(false);
+                Destroy(maps[rouSub[i].x, rouSub[i].y].Tile);
                 maps[rouSub[i].x, rouSub[i].y].Tile =
                     Instantiate(room, new Vector3(rouSub[i].x * 18 * .99f, rouSub[i].y * 12 * .99f, 0f), Quaternion.identity);
             }
-            
+
+            maps[rouSub[i].x, rouSub[i].y].Tile.GetComponent<Room>().x = rouSub[i].x;
+            maps[rouSub[i].x, rouSub[i].y].Tile.GetComponent<Room>().y = rouSub[i].y;
         }
 
         Debug.Log("blankNum = " + blankNum);
@@ -551,8 +664,10 @@ public class MainPathGenerator : MonoBehaviour
 
     void processMainPath()
     {
+        if (generateTime >= rou.Count)
+            return;
         int roomType = maps[rou[generateTime].x, rou[generateTime].y].type;
-        Debug.Log("gT/Cnt : " + generateTime + "/" + rou.Count);
+        //Debug.Log("gT/Cnt : " + generateTime + "/" + rou.Count);
 
         Image tile =
                 Instantiate(tileImage, mainDisplayPanel.transform);
@@ -590,6 +705,8 @@ public class MainPathGenerator : MonoBehaviour
 
     void processSubPath()
     {
+        if (generateTime >= rouSub.Count)
+            return;
         int roomType = maps[rouSub[generateTime].x, rouSub[generateTime].y].type;
         Image tile =
                 Instantiate(tileImage, subDisplayPanel.transform);
@@ -627,8 +744,12 @@ public class MainPathGenerator : MonoBehaviour
 
     public void skipGenerating()
     {
-        player.SetActive(true);
+        //player.SetActive(true);
+        //player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+        player.GetComponent<CharacterController2D>().UnfreezePlayer();
+        player.GetComponent<CharacterController2D>().invincible = false;
         generatingCanvas.SetActive(false);
+        UIController.Instance.transform.Find("Canvas").gameObject.SetActive(true);
 
         isEntered = true;
     }

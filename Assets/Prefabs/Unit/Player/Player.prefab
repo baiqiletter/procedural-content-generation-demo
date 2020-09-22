@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 8793451653709497146}
   - component: {fileID: 8811009015542830606}
   - component: {fileID: 8906166983922615874}
+  - component: {fileID: 3681001763095749687}
   m_Layer: 1
   m_Name: Player
   m_TagString: Player
@@ -62,7 +63,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8842883382875660106}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0001}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children:
   - {fileID: 8841657126116037570}
@@ -95,7 +96,6 @@ MonoBehaviour:
   m_WallCheck: {fileID: 8839836029637165182}
   canDoubleJump: 1
   m_DashForce: 25
-  life: 10
   invincible: 0
   particleJumpUp: {fileID: 8682197780795108602}
   particleJumpDown: {fileID: 8682377727081668176}
@@ -364,6 +364,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &3681001763095749687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8842883382875660106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef9db6d8e9fdc0b4f86627a235e4d9c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8843050250479019068
 GameObject:
   m_ObjectHideFlags: 0

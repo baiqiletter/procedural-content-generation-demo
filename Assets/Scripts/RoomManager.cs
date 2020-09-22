@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class RoomManager : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class RoomManager : MonoBehaviour
     public GameObject[] rooms1101;
     public GameObject[] rooms1110;
     public GameObject[] rooms1111;
+    public GameObject[] roomsEnd;
 
     // room templates
     public Sprite[] roomTempletes;

@@ -13,4 +13,9 @@ public class Room : MonoBehaviour
     // location
     public int x = 0;
     public int y = 0;
+
+    // type flag
+    public bool isSpecial = false;
+    public bool isEnd = false;
+
 }

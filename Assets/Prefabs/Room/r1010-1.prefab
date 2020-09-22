@@ -1456,6 +1456,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6122989611593432688}
   - component: {fileID: 1534530319323598101}
+  - component: {fileID: 7602920373134979537}
+  - component: {fileID: -5587063672318781914}
   m_Layer: 0
   m_Name: r1010-1
   m_TagString: Untagged
@@ -1496,6 +1498,38 @@ MonoBehaviour:
   entry_rt: 1
   x: 0
   y: 0
+  isSpecial: 0
+  isEnd: 0
+--- !u!114 &7602920373134979537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6122989611593432689}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbac122234cf6f84590544062aa95298, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyCount: 0
+  minEnemyCount: 1
+  maxEnemyCount: 3
+  isSpecialRoom: 0
+  isBossRoom: 0
+  roomTilemap: {fileID: 6122989612107706162}
+--- !u!114 &-5587063672318781914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6122989611593432689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f071c3fb3a691344a5bfe42c5348f23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6122989612098297135
 GameObject:
   m_ObjectHideFlags: 0
@@ -1556,6 +1590,7 @@ GameObject:
   - component: {fileID: 6122989612107706163}
   - component: {fileID: 6122989612107706161}
   - component: {fileID: 1555560233957774200}
+  - component: {fileID: 2906748224723171619}
   m_Layer: 0
   m_Name: Tilemap Ground
   m_TagString: Untagged
@@ -6486,6 +6521,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 7
+--- !u!114 &2906748224723171619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6122989612107706157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ace5d3376b3ccf44b3bdcc8acc08566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  room: {fileID: 6122989611593432689}
 --- !u!1 &7666112975823670055
 GameObject:
   m_ObjectHideFlags: 0

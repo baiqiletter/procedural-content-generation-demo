@@ -29,8 +29,8 @@ public class CharacterController2D : MonoBehaviour
 	private float prevVelocityX = 0f;
 	private bool canCheck = false; //For check if player is wallsliding
 
-	public float life; //Life of the player
-	public float maxLife = 10f; // Max life of the player
+	//public float life; //Life of the player
+	//public float maxLife = 10f; // Max life of the player
 	public bool invincible = false; //If player can die
 	private bool canMove = true; //If player can move
 
@@ -55,7 +55,7 @@ public class CharacterController2D : MonoBehaviour
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
-		life = maxLife;
+		//life = maxLife;
 
 		if (OnFallEvent == null)
 			OnFallEvent = new UnityEvent();
@@ -69,7 +69,7 @@ public class CharacterController2D : MonoBehaviour
 	{
 		bool wasGrounded = m_Grounded;
 		m_Grounded = false;
-		life = life > maxLife ? maxLife : life;
+		//life = life > maxLife ? maxLife : life;
 
 		// The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
 		// This can be done using layers instead but Sample Assets will not overwrite your project settings.
@@ -269,11 +269,12 @@ public class CharacterController2D : MonoBehaviour
 		if (!invincible)
 		{
 			animator.SetBool("Hit", true);
-			life -= damage;
+			//life -= damage;
+			GameManager.Instance.health -= damage;
 			Vector2 damageDir = Vector3.Normalize(transform.position - position) * 40f ;
 			m_Rigidbody2D.velocity = Vector2.zero;
 			m_Rigidbody2D.AddForce(damageDir * 10);
-			if (life <= 0)
+			if (GameManager.Instance.health <= 0)
 			{
 				StartCoroutine(WaitToDead());
 			}
@@ -342,6 +343,23 @@ public class CharacterController2D : MonoBehaviour
 		yield return new WaitForSeconds(0.4f);
 		m_Rigidbody2D.velocity = new Vector2(0, m_Rigidbody2D.velocity.y);
 		yield return new WaitForSeconds(1.1f);
-		SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+		//SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+		LevelFinish.Instance.transform.Find("GameOver Canvas").gameObject.SetActive(true);
+	}
+
+	public void FreezePlayer()
+    {
+		canMove = false;
+		invincible = true;
+		GetComponent<Attack>().enabled = false;
+		GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+	}
+
+	public void UnfreezePlayer()
+    {
+		canMove = true;
+		invincible = false;
+		GetComponent<Attack>().enabled = true;
+		GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
 	}
 }

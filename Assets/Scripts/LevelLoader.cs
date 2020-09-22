@@ -10,7 +10,13 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadLevel(int sceneIndex)
     {
+        //LevelFinish.Instance.transform.Find("GameOver Canvas").gameObject.SetActive(false);
+
+        // load scene
         StartCoroutine(loadAsynchronously(sceneIndex));
+        // change global value
+
+        GameManager.Instance.level++;
     }
 
     IEnumerator loadAsynchronously(int sceneIndex)
@@ -27,5 +33,12 @@ public class LevelLoader : MonoBehaviour
 
             yield return null;  // wait until next frame
         }
+
+        //if (!UIController.Instance.transform.Find("Canvas").gameObject.activeSelf)
+        //    UIController.Instance.transform.Find("Canvas").gameObject.SetActive(true);
+        if (LevelFinish.Instance.transform.Find("Canvas").gameObject.activeSelf)
+            LevelFinish.Instance.transform.Find("Canvas").gameObject.SetActive(false);
+
+        GameObject.Find("Player").GetComponent<CharacterController2D>().invincible = true;
     }
 }

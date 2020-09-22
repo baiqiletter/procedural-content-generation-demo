@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
-	public float dmgValue = 4;
+	//public float dmgValue = 4;
 	public GameObject throwableObject;
 	public Transform attackCheck;
 	private Rigidbody2D m_Rigidbody2D;
@@ -53,7 +53,7 @@ public class Attack : MonoBehaviour
 
 	public void DoDashDamage()
 	{
-		dmgValue = Mathf.Abs(dmgValue);
+		GameManager.Instance.attack = Mathf.Abs(GameManager.Instance.attack);
 		Collider2D[] collidersEnemies = Physics2D.OverlapCircleAll(attackCheck.position, 0.9f);
 		//print("player.DoDashDamage: collider count=" + collidersEnemies.Length);
 		for (int i = 0; i < collidersEnemies.Length; i++)
@@ -62,9 +62,9 @@ public class Attack : MonoBehaviour
 			{
 				if (collidersEnemies[i].transform.position.x - transform.position.x < 0)
 				{
-					dmgValue = -dmgValue;
+					GameManager.Instance.attack = -GameManager.Instance.attack;
 				}
-				collidersEnemies[i].gameObject.SendMessage("ApplyDamage", dmgValue);
+				collidersEnemies[i].gameObject.SendMessage("ApplyDamage", GameManager.Instance.attack);
 				cam.GetComponent<CameraFollow>().ShakeCamera();
 			}
 		}
