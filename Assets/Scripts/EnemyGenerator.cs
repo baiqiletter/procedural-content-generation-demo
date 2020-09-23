@@ -77,16 +77,16 @@ public class EnemyGenerator : MonoBehaviour
 
             enemySpawn = UnitManager.Instance.enemy[Random.Range(0, UnitManager.Instance.enemy.Length)];
 
-            Instantiate(enemySpawn, gameObject.transform);
-            enemySpawn.transform.localPosition =
+            GameObject enemyObject = Instantiate(enemySpawn, gameObject.transform);
+            enemyObject.transform.localPosition =
                 new Vector3(
                     blankTilePos.x * .99f * .5f,
                     blankTilePos.y * .99f * .5f,
                     0);
-            print(enemySpawn.name + " : " + enemySpawn.transform.position);
+            //print(enemySpawn.name + " : " + enemySpawn.transform.position);
             
             generatedEnemyCount++;
-            enemies.Add(enemySpawn);
+            enemies.Add(enemyObject);
         }
     }
 

@@ -2559,6 +2559,7 @@ MonoBehaviour:
   maxEnemyCount: 3
   isSpecialRoom: 0
   isBossRoom: 0
+  enemies: []
   roomTilemap: {fileID: 8913102596316311825}
 --- !u!114 &-5309584187523843405
 MonoBehaviour:
