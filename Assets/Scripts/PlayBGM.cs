@@ -24,7 +24,7 @@ public class PlayBGM : MonoBehaviour
         nowPlaying = Random.Range(0, bgm.Length);
         audioSource.clip = bgm[nowPlaying];
         audioSource.Play();
-        print("bgm: awake " + nowPlaying);
+        //print("bgm: awake " + nowPlaying);
     }
 
     // Update is called once per frame
@@ -35,7 +35,7 @@ public class PlayBGM : MonoBehaviour
             nowPlaying = (nowPlaying + 1) % bgm.Length;
             audioSource.clip = bgm[nowPlaying];
             audioSource.Play();
-            print("bgm: update " + nowPlaying);
+            //print("bgm: update " + nowPlaying);
         }
     }
 }

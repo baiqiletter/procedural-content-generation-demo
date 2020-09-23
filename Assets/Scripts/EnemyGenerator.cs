@@ -148,6 +148,7 @@ public class EnemyGenerator : MonoBehaviour
         foreach (GameObject enemy in enemies){
             Destroy(enemy);
         }
+        //print("enemies: " + enemies.Count + " / " + enemyCount);
         Destroy(gameObject);
     }
 

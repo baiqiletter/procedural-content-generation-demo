@@ -346,8 +346,13 @@ public class CharacterController2D : MonoBehaviour
 		m_Rigidbody2D.velocity = new Vector2(0, m_Rigidbody2D.velocity.y);
 		yield return new WaitForSeconds(1.1f);
 		//SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+		
+		// show game over screen
 		LevelFinish.Instance.transform.Find("GameOver Canvas").gameObject.SetActive(true);
 		LevelFinish.Instance.transform.Find("GameOver Canvas").Find("Panel").Find("Score Text").GetComponent<Text>().text = "Score:	" + GameManager.Instance.score;
+
+		// update score rank
+		GameManager.Instance.UpdateRank();
 	}
 
 	public void FreezePlayer()

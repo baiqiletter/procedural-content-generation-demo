@@ -38,8 +38,8 @@ public class GoToNextStage : MonoBehaviour
             GameManager.Instance.InitReached();
 
             // dynamic difficulty
-            GameManager.Instance.enemyHealthScale += .1f;
-            GameManager.Instance.enemyAttackScale += .1f;
+            GameManager.Instance.enemyHealthScale += .2f;
+            GameManager.Instance.enemyAttackScale += .2f;
 
             UIController.Instance.transform.Find("Canvas").gameObject.SetActive(false);
             LevelFinish.Instance.transform.Find("Canvas").gameObject.SetActive(true);

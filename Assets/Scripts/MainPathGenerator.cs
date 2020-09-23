@@ -55,8 +55,8 @@ public class MainPathGenerator : MonoBehaviour
 
     private int roulen;  //路径长度
     //private int rouSubLen;
-    public int minlen = 4; //最小路径长度
-    public int maxlen = 16; //最大路径长度
+    public int minlen; //最小路径长度
+    public int maxlen; //最大路径长度
 
     void Start()
     {
@@ -72,7 +72,7 @@ public class MainPathGenerator : MonoBehaviour
         minlen = Size * 2;
         maxlen = Size * 3;
 
-        print(maps.Length);
+        //print(maps.Length);
         //locTile =
         //    Instantiate(tileImage, signPanel.transform);
         //locTile.sprite = roomManager.locSign;
@@ -81,7 +81,7 @@ public class MainPathGenerator : MonoBehaviour
         {
             for (int j = 0; j < Size; j++)
             {
-                print(i + " " + j + "size: " + Size);
+                //print(i + " " + j + "size: " + Size);
                 maps[i, j].select = 0;
                 maps[i, j].up = 0;
                 maps[i, j].down = 0;
@@ -193,8 +193,8 @@ public class MainPathGenerator : MonoBehaviour
         blankNum--;
 
         //第一行选取起始位置
-        int entranceX = Random.Range(0, 4);  //随机起点
-        int entranceY = Random.Range(0, 4);
+        int entranceX = Random.Range(0, Size);  //随机起点
+        int entranceY = Random.Range(0, Size);
 
         Route nextNode;
         nextNode.x = entranceX;

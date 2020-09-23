@@ -27,7 +27,7 @@ public class LevelFinish : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print("update score");
+        //print("update score");
     }
 
 }

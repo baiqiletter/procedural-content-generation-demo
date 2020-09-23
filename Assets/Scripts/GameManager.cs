@@ -62,6 +62,9 @@ public class GameManager : MonoBehaviour
             score += passScore;
             print("(" + posX + ", " + posY + ")");
         }
+
+        // check rank storage
+        BuildRankStorage();
     }
 
     public void InitVar()
@@ -102,5 +105,62 @@ public class GameManager : MonoBehaviour
                 reached[i, j] = false;
             }
         }
+    }
+
+    void BuildRankStorage()
+    {
+        if (!PlayerPrefs.HasKey("rank1"))
+        {
+            PlayerPrefs.SetInt("rank1", 0);
+        }
+        if (!PlayerPrefs.HasKey("rank2"))
+        {
+            PlayerPrefs.SetInt("rank3", 0);
+        }
+        if (!PlayerPrefs.HasKey("rank3"))
+        {
+            PlayerPrefs.SetInt("rank3", 0);
+        }
+        if (!PlayerPrefs.HasKey("rank4"))
+        {
+            PlayerPrefs.SetInt("rank4", 0);
+        }
+        if (!PlayerPrefs.HasKey("rank5"))
+        {
+            PlayerPrefs.SetInt("rank5", 0);
+        }
+    }
+
+    public void UpdateRank()
+    {
+        if (score > PlayerPrefs.GetInt("rank5"))
+        {
+            PlayerPrefs.SetInt("rank5", score);
+        }
+        if (score > PlayerPrefs.GetInt("rank4"))
+        {
+            int tempScore = PlayerPrefs.GetInt("rank4");
+            PlayerPrefs.SetInt("rank4", score);
+            PlayerPrefs.SetInt("rank5", tempScore);
+        }
+        if (score > PlayerPrefs.GetInt("rank3"))
+        {
+            int tempScore = PlayerPrefs.GetInt("rank3");
+            PlayerPrefs.SetInt("rank3", score);
+            PlayerPrefs.SetInt("rank4", tempScore);
+        }
+        if (score > PlayerPrefs.GetInt("rank2"))
+        {
+            int tempScore = PlayerPrefs.GetInt("rank2");
+            PlayerPrefs.SetInt("rank2", score);
+            PlayerPrefs.SetInt("rank3", tempScore);
+        }
+        if (score > PlayerPrefs.GetInt("rank1"))
+        {
+            int tempScore = PlayerPrefs.GetInt("rank1");
+            PlayerPrefs.SetInt("rank1", score);
+            PlayerPrefs.SetInt("rank2", tempScore);
+        }
+        print("update rank");
     }
 }
