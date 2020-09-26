@@ -36,12 +36,14 @@ public class MainPathGenerator : MonoBehaviour
     public Button mainPathButton;
     public Button subPathButton;
     public Button startButton;
+    public InputField mapScaleInputFiled;
 
     private RoomManager roomManager;
     private int generateTime = 0;
     private Image playerLocation;
 
     public int Size;//地图边长
+    public float generateTileGap = .3f;
     private Map[,] maps;//原始地图
     private int blankNum;
     private bool isEntered;
@@ -103,6 +105,8 @@ public class MainPathGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Size = GameManager.Instance.mapScale;
+
         if (isEntered)
         {
             // mini-map
@@ -521,8 +525,8 @@ public class MainPathGenerator : MonoBehaviour
         startButton.interactable = false;
 
         generateTime = 0;
-        InvokeRepeating("processMainPath", 0.3f, 0.3f);
-        Invoke("stopProcessMainPath", (rou.Count + 1) * 0.3f);
+        InvokeRepeating("processMainPath", generateTileGap, generateTileGap);
+        Invoke("stopProcessMainPath", (rou.Count + 1) * generateTileGap);
 
         for (int i = 0; i < rou.Count; i++)
         {
@@ -594,8 +598,8 @@ public class MainPathGenerator : MonoBehaviour
         startButton.interactable = false;
 
         generateTime = 0;
-        InvokeRepeating("processSubPath", 0.3f, 0.3f);
-        Invoke("stopProcessSubPath", (rouSub.Count + 1) * 0.3f);
+        InvokeRepeating("processSubPath", generateTileGap, generateTileGap);
+        Invoke("stopProcessSubPath", (rouSub.Count + 1) * generateTileGap);
 
         for (int i = 0; i < rouSub.Count; i++)
         {
@@ -794,5 +798,14 @@ public class MainPathGenerator : MonoBehaviour
         locationTile.sprite = roomManager.locSign;
 
         
+    }
+
+    public void UpdateMapScale()
+    {
+        print("text: " + mapScaleInputFiled.textComponent.text);
+        GameManager.Instance.mapScale = int.Parse(mapScaleInputFiled.textComponent.text);
+        print("parse: " + GameManager.Instance.mapScale);
+        GameManager.Instance.level--;
+        GameObject.Find("Finish Controller").GetComponent<LevelLoader>().LoadLevel(1);
     }
 }
